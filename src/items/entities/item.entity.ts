@@ -5,20 +5,20 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @ObjectType()
 export class Item {
 
-  @PrimaryGeneratedColumn('uuid')
-  @Field(() => ID)
-  id: string;
+    @PrimaryGeneratedColumn('uuid')
+    @Field(() => ID)
+    id: string;
 
-  @Column()
-  @Field(() => String)
-  name: string;
+    @Column()
+    @Field(() => String)
+    name: string;
 
-  @Column()
-  @Field(() => Float)
-  quantity: number;
+    @Column()
+    @Field(() => Float)
+    quantity: number;
 
-  @Column()
-  @Field(() => String)
-  quantityUnits: string;
+    @Column()
+    @Field(() => String)
+    quantityUnits: string;
 
 }
