@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ID } from '@nestjs/graphql';
 import { ItemsService } from './items.service';
 import { Item } from './entities/item.entity';
 import { CreateItemInput } from './dto/inputs/create-item.input';
@@ -21,17 +21,17 @@ export class ItemsResolver {
   }
 
   @Query(() => Item, { name: 'item' })
-  findOne(@Args('id', { type: () => String }) id: string) {
-    return this.itemsService.findOne(id);
+  async findOne(@Args('id', { type: () => ID }) id: string): Promise<Item> {
+    return await this.itemsService.findOne(id);
   }
 
   @Mutation(() => Item)
-  updateItem(@Args('updateItemInput') updateItemInput: UpdateItemInput) {
-    return this.itemsService.update(updateItemInput.id, updateItemInput);
+  async updateItem(@Args('updateItemInput') updateItemInput: UpdateItemInput): Promise<Item> {
+    return await this.itemsService.update(updateItemInput.id, updateItemInput);
   }
 
   @Mutation(() => Item)
-  removeItem(@Args('id', { type: () => Int }) id: number) {
-    return this.itemsService.remove(id);
+  async removeItem(@Args('id', { type: () => Int }) id: number) {
+    return await this.itemsService.remove(id);
   }
 }
