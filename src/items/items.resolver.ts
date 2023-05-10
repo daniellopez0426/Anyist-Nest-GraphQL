@@ -31,7 +31,7 @@ export class ItemsResolver {
   }
 
   @Mutation(() => Item)
-  async removeItem(@Args('id', { type: () => Int }) id: number) {
+  async removeItem(@Args('id', { type: () => ID }) id: string) {
     return await this.itemsService.remove(id);
   }
 }
