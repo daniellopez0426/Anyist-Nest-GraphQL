@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { SignupInput } from '../auth/dto/inputs/signup.input';
 import { Repository } from 'typeorm';
@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UsersService {
+
+  private logger = new Logger('Users services');
 
   constructor(
     @InjectRepository(User)
@@ -18,7 +20,16 @@ export class UsersService {
       return await this.usersRepository.save(newUser);
     } catch (error) {
       console.log(error);
+      this.handleDBError(error);
     }
+  }
+
+  private handleDBError(error: any): never {
+    if (error.code === '23505') {
+      throw new BadRequestException(error.detail.replace('Key ', ''));
+    }
+    this.logger.error(error);
+    throw new InternalServerErrorException('Check the  logs');
   }
 
   async findAll(): Promise<User[]> {
